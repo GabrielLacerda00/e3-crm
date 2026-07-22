@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: e3-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: e3user
+      POSTGRES_PASSWORD: e3pass
+      POSTGRES_DB: e3crm
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
