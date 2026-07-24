@@ -9,3 +9,6 @@ node_modules/
 
 # Docker
 *.log
+
+# Firebase
+firebase-credentials.json

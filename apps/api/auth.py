@@ -2,9 +2,14 @@ from fastapi import HTTPException
 import firebase_admin
 from firebase_admin import credentials, auth
 import os
+import json
 
 if not firebase_admin._apps:
-    cred = credentials.Certificate(os.getenv("FIREBASE_CREDENTIALS_PATH"))
+    cred_json = os.environ.get("FIREBASE_CREDENTIALS")
+    if cred_json:
+        cred = credentials.Certificate(json.loads(cred_json))
+    else:
+        cred = credentials.Certificate(os.environ.get("FIREBASE_CREDENTIALS_PATH", "firebase-credentials.json"))
     firebase_admin.initialize_app(cred)
 
 async def verify_firebase_token(authorization: str):
