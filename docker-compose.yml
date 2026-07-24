@@ -11,7 +11,14 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-  
+
+  redis:
+    image: redis:7-alpine
+    container_name: e3-redis
+    restart: always
+    ports:
+      - "6379:6379"
+
   evolution:
     image: evoapicloud/evolution-api:latest
     container_name: e3-evolution
@@ -21,9 +28,17 @@ services:
     environment:
       SERVER_URL: http://localhost:8080
       AUTHENTICATION_API_KEY: e3-evolution-key
-      DATABASE_ENABLED: "false"
+      DATABASE_ENABLED: "true"
+      DATABASE_PROVIDER: postgresql
+      DATABASE_CONNECTION_URI: "postgresql://e3user:e3pass@postgres:5432/evolution_db"
+      DATABASE_CONNECTION_CLIENT_NAME: evolution
+      CACHE_REDIS_ENABLED: "true"
+      CACHE_REDIS_URI: "redis://redis:6379/6"
     volumes:
       - evolution_data:/evolution/instances
+    depends_on:
+      - postgres
+      - redis
 
 volumes:
   postgres_data:
