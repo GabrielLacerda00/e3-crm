@@ -26,7 +26,7 @@ export default function DashboardPage() {
       }
 
       const token = await user.getIdToken();
-      const res = await fetch("http://localhost:8000/messages", {
+      const res = await fetch("https://e3-crm-production.up.railway.app/messages", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
